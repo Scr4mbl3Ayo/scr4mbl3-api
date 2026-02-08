@@ -1,8 +1,18 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from encoder import shift_cipher
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Allow all domains (public usage)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],      # Allow requests from any domain
+    allow_credentials=True,
+    allow_methods=["*"],      # Allow GET, POST, etc.
+    allow_headers=["*"],      # Allow custom headers
+)
 
 @app.post("/encode")
 async def encode(payload: dict):
@@ -22,3 +32,4 @@ async def encode(payload: dict):
             status_code=200,
             content={"error": str(e)}
         )
+
